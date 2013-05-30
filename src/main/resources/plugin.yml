@@ -1,0 +1,25 @@
+name: WoodburryPlugin
+main: net.woodburry.WoodburryPlugin
+version: 1.0.0-SNAPSHOT
+
+commands:
+   woodburry:
+      description: This is the woodburry command.
+      usage: /woodburry
+      permission: WoodburryPlugin.woodburry
+      permission-message: You don't have permission to use the woodburry command
+   webusers:
+      description: This command lists all of the users registered on woodburry.net website
+      usage: /webusers
+      permission: WoodburryPlugin.webusers
+      permission-message: You don't have permission to use the webusers command
+   ratings:
+      description: This command lists all the users and their respective ratings
+      usage: /ratings
+      permission: WoodburryPlugin.ratings
+      permission-message: You don't have permission to use the ratings command
+   updateWhitelist:
+         description: This command updates the whitelist based on drupal users
+         usage: /updateWhitelist
+         permission: WoodburryPlugin.updatewhitelist
+         permission-message: You don't have permission to use the updatewhitelist command
