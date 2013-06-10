@@ -6,7 +6,7 @@
 
     <groupId>woodburry_plugin</groupId>
     <artifactId>WoodburryPlugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <repositories>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.5.1-R0.3-SNAPSHOT</version>
+            <version>1.5.2-R0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>lib.PatPeter</groupId>
