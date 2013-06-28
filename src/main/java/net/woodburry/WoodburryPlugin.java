@@ -2,17 +2,17 @@ package net.woodburry;
 
 import lib.PatPeter.SQLibrary.Database;
 import lib.PatPeter.SQLibrary.MySQL;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 public class WoodburryPlugin extends JavaPlugin {
 
     private Database sql = null;
+    private ChatManager chatManager;
 
     @Override
     public void onEnable(){
@@ -42,15 +43,50 @@ public class WoodburryPlugin extends JavaPlugin {
         getLogger().info("database connect done!");
         UpdateWhitelistTask updateWhitelistTask = new UpdateWhitelistTask(this);
         updateWhitelistTask.runTaskTimer(this, 0, 2400);
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+
+//        try {
+//            final File[] libs = new File[] {
+//                    new File(getDataFolder(), "activation.jar"),
+//                    new File(getDataFolder(), "mail.jar") };
+//            for (final File lib : libs) {
+//                if (!lib.exists()) {
+//                    JarUtils.extractFromJar(lib.getName(),
+//                            lib.getAbsolutePath());
+//                }
+//            }
+//            for (final File lib : libs) {
+//                if (!lib.exists()) {
+//                    getLogger().warning(
+//                            "There was a critical error loading My plugin! Could not find lib: "
+//                                    + lib.getName());
+//                    Bukkit.getServer().getPluginManager().disablePlugin(this);
+//                    return;
+//                }
+//                addClassPath(JarUtils.getJarUrl(lib));
+//            }
+//        } catch (final Exception e) {
+//            e.printStackTrace();
+//            getLogger().severe(e.getMessage().toString());
+//        }
+
+        chatManager = new ChatManager(getServer(), this, getLogger());
     }
 
-    class ChatListener implements Listener {
-        @EventHandler
-        public void onPlayerChat(AsyncPlayerChatEvent event) {
-            getLogger().info("got chat: " + event.getMessage());
+    private void addClassPath(final URL url) throws IOException {
+        final URLClassLoader sysloader = (URLClassLoader) ClassLoader
+                .getSystemClassLoader();
+        final Class<URLClassLoader> sysclass = URLClassLoader.class;
+        try {
+            final Method method = sysclass.getDeclaredMethod("addURL",
+                    new Class[] { URL.class });
+            method.setAccessible(true);
+            method.invoke(sysloader, new Object[] { url });
+        } catch (final Throwable t) {
+            t.printStackTrace();
+            throw new IOException("Error adding " + url
+                    + " to system classloader");
         }
-    };
+    }
 
     @Override
     public void onDisable() {
